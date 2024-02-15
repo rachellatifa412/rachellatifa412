@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moving Tulips</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas" width="800" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Pink
+    const GREEN = '#00FF00';
+
+    // Kelas bunga tulip 
+    class Tulip {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.angle = 0;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 30, 0, Math.PI * 2);
+        ctx.fillStyle = GREEN;
+        ctx.fill();
+        for (let i = 0; i < 5; i++) {
+          const angleRad = (this.angle + i * (360 / 5)) * (Math.PI / 180);
+          const x = this.x + 30 * Math.cos(angleRad);
+          const y = this.y + 30 * Math.sin(angleRad);
+          ctx.beginPath();
+          ctx.arc(x, y, 15, 0, Math.PI * 2);
+          ctx.fillStyle = GREEN;
+          ctx.fill();
+        }
+      }
+
+      move() {
+        this.x += 1; // Left
+        this.y += 1; // Right
+        this.angle += 1; // Mengubah sudut bunga tulip saat bergerak
+      }
+    }
+
+    // Membuat objek bunga tulip
+    const tulips = [];
+    for (let i = 0; i < 8; i++) {
+      const tulip = new Tulip(100 * (i + 1), 100 * (i + 1));
+      tulips.push(tulip);
+    }
+
+    // Fungsi untuk menggambar dan menggerakkan bunga tulip
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      tulips.forEach(tulip => {
+        tulip.draw();
+        tulip.move();
+      });
+      requestAnimationFrame(draw);
+    }
+
+    // Memanggil fungsi draw
+    draw();
+  </script>
+</body>
+</html>
